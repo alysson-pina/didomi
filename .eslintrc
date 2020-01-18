@@ -1,0 +1,12 @@
+{
+  "parser": "babel-eslint",
+  "extends": ["airbnb"],
+  "rules": {
+    "quotes": [2, "double", { "avoidEscape": true }],
+    "no-use-before-define": "off",
+    "global-require": "off",
+    "arrow-parens": "off",
+    "import/prefer-default-export": "off",
+    "operator-linebreak": "off"
+  }
+}
