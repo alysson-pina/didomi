@@ -6,15 +6,7 @@
 * Webpack 4
 * Babel 7
 * Hot Module Replacement
-
-## DIY Add-Ons
-
-* [ESLint]
-* [CSS Modules]
-* [SVG Icons]
-* [Fonts Support]
-* [Images Support]
-
+* ESLint
 
 ## Installation
 
@@ -23,3 +15,10 @@
 * npm install
 * npm start
 * visit `http://localhost:8080/`
+
+## Future improvements
+
+* [CSS Modules]
+* [SVG Icons]
+* [Fonts Support]
+* [Images Support]

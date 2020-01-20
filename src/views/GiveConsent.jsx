@@ -137,16 +137,10 @@ const GiveConsent = ({ history, addUser }) => {
 };
 
 GiveConsent.propTypes = {
-  history: PropTypes.objectOf({
-    push: PropTypes.func.isRequired,
-  }),
+  history: PropTypes.shape({
+    push: PropTypes.func,
+  }).isRequired,
   addUser: PropTypes.func.isRequired,
-};
-
-GiveConsent.defaultProps = {
-  history: {
-    push: () => {},
-  },
 };
 
 const mapDispatchToProps = (dispatch) => ({ addUser: (user) => dispatch(addUserConsent(user)) });

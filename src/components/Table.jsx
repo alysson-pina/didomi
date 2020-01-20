@@ -1,102 +1,66 @@
 /* eslint-disable react/prop-types */
 import React from "react";
+import { makeStyles } from "@material-ui/core";
 
-import { useTable } from "react-table";
-import { styled } from "@material-ui/core";
+import { userPropTypes } from "../types/types";
 
-import isEmpty from "../utils/isEmptyObj";
+const emptyRow = (
+  <tr>
+    <td />
+    <td />
+    <td />
+  </tr>
+);
 
-const ReposTable = ({ data }) => {
-  const columns = React.useMemo(
-    () => [
-      {
-        Header: "ID",
-        accessor: "id",
-      },
-      {
-        Header: "Name",
-        accessor: "name",
-      },
-      {
-        Header: "URL",
-        accessor: "html_url",
-      },
-    ],
-    [],
-  );
+const Table = ({ users }) => {
+  const classes = useStyles();
+  const tableBody = users
+    .filter(el => el != null)
+    .map(user => (
+      <tr key={user.id}>
+        <td>{user.name}</td>
+        <td>{user.email}</td>
+        <td>{user.consents.join(",")}</td>
+      </tr>
+    ));
 
   return (
-    <>
-      {isEmpty(data) ? null : (
-        <Styles>
-          <Table columns={columns} data={data} />
-        </Styles>
-      )}
-    </>
-  );
-};
-
-export default ReposTable;
-
-function Table({ columns, data }) {
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    rows,
-    prepareRow,
-  } = useTable({
-    columns,
-    data,
-  });
-
-  // Render the UI
-  return (
-    <table {...getTableProps()}>
+    <table className={classes.table}>
       <thead>
-        {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render("Header")}</th>
-            ))}
-          </tr>
-        ))}
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Consent given for:</th>
+        </tr>
       </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row);
-          return (
-            <tr {...row.getRowProps()}>
-              {row.cells.map(cell => <td {...cell.getCellProps()}>{cell.render("Cell")}</td>)}
-            </tr>
-          );
-        })}
+      <tbody>
+        {users == null || users.length === 0 ? emptyRow : tableBody}
       </tbody>
     </table>
   );
-}
+};
 
-const Styles = styled.div`
-  padding: 1rem;
-  table {
-    border-spacing: 0;
-    border: 1px solid black;
-    tr {
-      :last-child {
-        td {
-          border-bottom: 0;
-        }
-      }
-    }
-    th,
-    td {
-      margin: 0;
-      padding: 0.5rem;
-      border-bottom: 1px solid black;
-      border-right: 1px solid black;
-      :last-child {
-        border-right: 0;
-      }
-    }
-  }
-`;
+Table.propTypes = userPropTypes;
+
+export default Table;
+
+const useStyles = makeStyles(() => ({
+  root: {
+    display: "flex",
+    margin: 20,
+  },
+  table: {
+    border: "1px solid black",
+    borderSpacing: 0,
+    padding: "5px",
+    "& th, td": {
+      margin: "0",
+      padding: "0.5rem",
+      borderBottom: "1px solid black",
+      borderRight: "1px solid black",
+    },
+    "& td": {
+      minHeight: "15px",
+    },
+  },
+}));

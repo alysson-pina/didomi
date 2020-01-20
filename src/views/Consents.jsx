@@ -4,15 +4,10 @@ import PropTypes from "prop-types";
 import { makeStyles } from "@material-ui/core";
 import { ClipLoader } from "react-spinners";
 
+import LeftNav from "../components/LeftNav";
+import Table from "../components/Table";
 import { addUsersConsent } from "../actions";
-
-const emptyRow = (
-  <tfoot>
-    <td> </td>
-    <td> </td>
-    <td> </td>
-  </tfoot>
-);
+import { userPropTypes } from "../types/types";
 
 const Consents = ({ users, addUsers }) => {
   const [isLoading, setIsLoading] = useState(true);
@@ -48,48 +43,28 @@ const Consents = ({ users, addUsers }) => {
 
   return (
     <div className={classes.root}>
-      <table>
-        <tr>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Consent given for:</th>
-        </tr>
-
-        {users
-          .filter(el => el != null)
-          .map(user => (
-            <tr>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.consents.join(",")}</td>
-            </tr>
-          ))}
-        {users == null || users.length === 0 ? emptyRow : ""}
-        {error.length > 0 ? <div className={classes.error}>{error}</div> : null}
-      </table>
-      <div className={classes.spinner}>
-        <ClipLoader
-          css="margin: 0 auto"
-          size={40}
-          color="#123abc"
-          loading={isLoading}
-        />
+      <LeftNav />
+      <div className={classes.content}>
+        <Table users={users} />
+        {error.length > 0 ? (
+          <div className={classes.error}>{error}</div>
+        ) : null}
+        <div className={classes.spinner}>
+          <ClipLoader
+            css="margin: 0 auto"
+            size={40}
+            color="#123abc"
+            loading={isLoading}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
 Consents.propTypes = {
-  users: PropTypes.arrayOf({
-    name: PropTypes.string,
-    email: PropTypes.string,
-    consents: PropTypes.array,
-  }).isRequired,
+  users: PropTypes.arrayOf(userPropTypes).isRequired,
   addUsers: PropTypes.func.isRequired,
-};
-
-Consents.defaultTypes = {
-  users: [],
 };
 
 const mapStateToProps = state => ({ users: state.users });
@@ -101,6 +76,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Consents);
 
 const useStyles = makeStyles(() => ({
   root: {
+    display: "flex",
     margin: 20,
     "& table, td, th": {
       border: "1px solid black",
@@ -109,6 +85,9 @@ const useStyles = makeStyles(() => ({
     "& td": {
       minHeight: "15px",
     },
+  },
+  content: {
+    flexGrow: 1,
   },
   spinner: {
     display: "flex",

@@ -1,6 +1,6 @@
 const addUsersConsent = (users) => (
   {
-    type: "ADD_USER_CONSENT",
+    type: "ADD_USERS_CONSENT",
     users,
   }
 );

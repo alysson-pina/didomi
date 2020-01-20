@@ -1,10 +1,13 @@
 const usersReducer = (state = [], action) => {
-  if (action != null && action.type === "ADD_USER_CONSENT") {
-    if (action.users != null && action.users.length > 0) { // bulk users add
-      return [...state, ...action.users];
-    }
-    // add single user
-    return [...state, action.user];
+  if (action != null && action.type === "ADD_USER_CONSENT") { // add single user
+    return [...state, { ...action.user, id: state.length + 1 }];
+  }
+
+  if (action != null && action.type === "ADD_USERS_CONSENT") { // add bulk users
+    const usersNormalized = action.users.map(
+      (user, index) => ({ ...user, id: state.length + 1 + index }),
+    );
+    return [...state, ...usersNormalized];
   }
 
   return state;
